@@ -114,6 +114,7 @@ const submitBtn = document.querySelector("#submit");
     const correct = document.createElement("span");
 
     let numCorrect = 0;
+    let maxQuestions = 10;
 
     myQuestions.forEach((currentQuestion, questionNumber) => {
       const answerCont = answerS[questionNumber];
@@ -129,6 +130,19 @@ const submitBtn = document.querySelector("#submit");
       }
     });
     resultsDiv.innerHTML = `${numCorrect} / ${myQuestions.length}`;
+    const result = document.createElement("p");
+
+    if (numCorrect > maxQuestions * 0.75) {
+      result.innerHTML = "MVG";
+      result.style.color = "green";
+    } else if (numCorrect > maxQuestions * 0.5) {
+      result.innerHTML = "G";
+      result.style.color = "orange";
+    } else if (numCorrect < maxQuestions * 0.5) {
+      result.innerHTML = "IG";
+      result.style.color = "red";
+    }
+    resultsDiv.append(result);
   }
 
   // display quiz right away
