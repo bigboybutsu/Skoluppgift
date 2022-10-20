@@ -4,16 +4,21 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Ankademin Quiz</title>
     <script src="main.js" defer></script>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Ankademin Quiz</h1>
-    <button id="darkMode">Darkmode Toggle</button>
-    <p></p>
-    <div id="quiz"></div>
-    <button id="submit">Submit answers</button>
-    <div id="results"></div>
+    <div class="main-container">
+      <button id="darkMode" class="btn">Darkmode</button>
+      <div id="question-container">
+        <div id="question"></div>
+        <div id="answers-container"></div>
+      </div>
+      <div class="controls">
+        <button id="start-btn" class="start-btn btn">Start</button>
+        <button id="next-btn" class="next-btn btn hide">Next</button>
+      </div>
+    </div>
   </body>
 </html>

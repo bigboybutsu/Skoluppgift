@@ -1,11 +1,47 @@
-body {
-  padding: 10px;
+.main-container {
+  text-align: center;
+  width: 300px;
+  border: 1px black;
+  border-style: solid;
+  padding: 15px;
+  margin: 20px;
+  background-color: orange;
+}
+.btn {
+  color: white;
+  background-color: rgba(128, 0, 0, 0.3);
+  padding: 3px;
+  margin: 2px;
+}
+.answer-btn:focus {
+  background: #e5e5e5;
+  -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
+  -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
+  box-shadow: inset 0px 0px 5px #c1c1c1;
+  outline: none;
+  color: white;
+  background-color: rgba(0, 17, 202, 0.594);
+}
+.hide {
+  display: none;
+}
+.body {
   background-color: white;
   color: black;
-  font-size: 17px;
 }
-
 .dark-mode {
   background-color: black;
   color: white;
+  border: 1px white;
+}
+.answerRC-btn {
+  border: 1.5px solid black;
+  background-color: rgba(128, 0, 0, 0.3);
+  margin: 10px;
+  padding: 1px;
+  cursor: pointer;
+}
+.answerRC-btn:focus {
+  color: white;
+  background-color: rgba(0, 17, 202, 0.594);
 }
