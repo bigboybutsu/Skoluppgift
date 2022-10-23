@@ -99,9 +99,11 @@ const mainContainer = document.querySelector(".main-container");
 const answerBtn = document.querySelectorAll(".answer-btn");
 const darkModeBtn = document.querySelector("#darkMode");
 const controls = document.querySelector(".controls");
+const listContainer = document.querySelector(".list-container");
+const span = document.createElement("span");
+questionContainer.prepend(span);
 
 let currentQuestionIndex;
-
 let totalscore = 0;
 let maxQuest = questions.length;
 
@@ -109,13 +111,12 @@ startBtn.addEventListener("click", () => {
   currentQuestionIndex = 0;
   showQuestion(questions[currentQuestionIndex]);
   startBtn.classList.add("hide");
-  darkModeBtn.classList.add("hide");
+  // darkModeBtn.classList.add("hide");
   nextBtn.classList.remove("hide");
 });
 
 let hasClicked = false;
 let hasClickedFalse = document.createElement("div");
-// hasClickedFalse.innerText = "Please select an option!";
 nextBtn.addEventListener("click", () => {
   if (hasClicked) {
     hasClickedFalse.innerText = "";
@@ -129,10 +130,15 @@ nextBtn.addEventListener("click", () => {
 });
 
 let p = document.createElement("p");
+// let trueAnswers = [];
+// let falseAnswers = [];
 function nextQuestion() {
   if (getPoint) {
     totalscore++;
+    // trueAnswers.push(questions[currentQuestionIndex]);
     getPoint = false;
+  } else {
+    // falseAnswers.push(questions[currentQuestionIndex]);
   }
   answerContainer.innerHTML = "";
   p.innerText = "";
@@ -144,32 +150,17 @@ function nextQuestion() {
   } else {
     getResult();
   }
+  // allAnswers.push(questions[currentQuestionIndex]);
 }
 
 let getPoint = false;
 
 function showQuestion(question) {
   questionElement.innerText = question.question;
+  span.innerHTML = "";
+  span.innerHTML = `<b><u>Question: ${currentQuestionIndex} / ${questions.length}</u></b> `;
 
-  if (question.type === "trueFalse") {
-    question.answers.forEach((answer) => {
-      const button = document.createElement("button");
-      button.innerText = answer.text;
-      button.classList.add("answer-btn");
-      button.addEventListener("click", () => {
-        if (answer.correct === true) {
-          getPoint = true;
-          hasClicked = true;
-          // console.log("nu är det true");
-        } else if (answer.correct === false) {
-          getPoint = false;
-          hasClicked = true;
-          // console.log("nu är det false");
-        }
-      });
-      answerContainer.append(button);
-    });
-  } else if (question.type === "multChoice") {
+  if (question.type === "multChoice" || question.type === "trueFalse") {
     question.answers.forEach((answer, i) => {
       const label = document.createElement("label");
       label.classList.add("answerRC-btn");
@@ -218,20 +209,12 @@ function showQuestion(question) {
         console.log("checkbox checked: " + checkbox.checked);
         if (checkbox.checked && answer.correct === true) {
           trueChecked++;
-          console.log("TrueChecked: " + trueChecked);
-          console.log("FalseChecked: " + falseChecked);
         } else if (checkbox.checked === false && answer.correct === true) {
           trueChecked--;
-          console.log("TrueChecked: " + trueChecked);
-          console.log("FalseChecked: " + falseChecked);
         } else if (checkbox.checked && answer.correct === false) {
           falseChecked++;
-          console.log("TrueChecked: " + trueChecked);
-          console.log("FalseChecked: " + falseChecked);
         } else if (checkbox.checked === false && answer.correct === false) {
           falseChecked--;
-          console.log("FalseChecked: " + falseChecked);
-          console.log("TrueChecked: " + trueChecked);
         }
         if (trueChecked === amountTrue && falseChecked === 0) {
           getPoint = true;
@@ -240,8 +223,6 @@ function showQuestion(question) {
           getPoint = false;
           console.log("nu är det false");
         }
-        // Gör egen if statement för om checkboxen
-        // är i checkad så är hasClicked = true
         if (trueChecked === 0 && falseChecked === 0) {
           hasClicked = false;
         } else {
@@ -255,24 +236,31 @@ function showQuestion(question) {
 
 function getResult() {
   nextBtn.classList.add("hide");
+  // listContainer.classList.remove("hide");
   questionContainer.classList.add("hide");
   const result = document.createElement("p");
+
+  // const goodList = document.createElement("ul");
+  // goodList.classList.add("good-list");
+  // goodList.forEach((obj) => {
+  //   list = document.createElement("li");
+  //   list.innerHTML = obj;
+  //   goodList.append(list);
+  // });
+  // listContainer.append(goodList);
 
   if (totalscore > maxQuest * 0.75) {
     result.innerHTML = "MVG";
     result.style.color = "green";
-  } else if (totalscore > maxQuest * 0.5) {
+  } else if (totalscore >= maxQuest * 0.5) {
     result.innerHTML = "G";
-    result.style.color = "orange";
+    result.style.color = "blue";
   } else if (totalscore < maxQuest * 0.5) {
     result.innerHTML = "IG";
     result.style.color = "red";
   }
-
   p.innerHTML = `${totalscore} / ${questions.length}`;
-  // p.innerText = "totalscore: " + totalscore + "/ " + questions.length;
   mainContainer.append(result);
-  // mainContainer.append(p);
 }
 
 darkModeBtn.addEventListener("click", () => {

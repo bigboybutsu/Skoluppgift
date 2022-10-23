@@ -7,11 +7,29 @@
   margin: 20px;
   background-color: orange;
 }
+.list-container {
+  text-align: center;
+  width: 300px;
+  border: 1px black;
+  border-style: solid;
+  padding: 15px;
+  margin: 20px;
+  background-color: orange;
+}
 .btn {
   color: white;
   background-color: rgba(128, 0, 0, 0.3);
   padding: 3px;
   margin: 2px;
+}
+.btn.dark-mode {
+  color: black;
+}
+.answer-btn {
+  border: 1.5px solid black;
+  background-color: rgba(128, 0, 0, 0.3);
+  margin: 10px;
+  padding: px;
 }
 .answer-btn:focus {
   background: #e5e5e5;
@@ -29,11 +47,6 @@
   background-color: white;
   color: black;
 }
-.dark-mode {
-  background-color: black;
-  color: white;
-  border: 1px white;
-}
 .answerRC-btn {
   border: 1.5px solid black;
   background-color: rgba(128, 0, 0, 0.3);
@@ -44,4 +57,18 @@
 .answerRC-btn:focus {
   color: white;
   background-color: rgba(0, 17, 202, 0.594);
+}
+.dark-mode {
+  background-color: black;
+  color: white;
+  border: 1px white;
+}
+/* Gör så här för allt som ska darkmode */
+.dark-mode .main-container {
+  background: yellow;
+}
+#darkMode {
+  position: relative;
+  right: 125px;
+  bottom: 13px;
 }
