@@ -64,11 +64,14 @@
   border: 1px white;
 }
 /* Gör så här för allt som ska darkmode */
-.dark-mode .main-container {
+/* .dark-mode .main-container {
   background: yellow;
-}
+} */
 #darkMode {
   position: relative;
   right: 125px;
   bottom: 13px;
+}
+#ul-list {
+  list-style: none;
 }

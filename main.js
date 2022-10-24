@@ -3,88 +3,88 @@ const questions = [
     type: "trueFalse",
     question: "Är kungen en kung?",
     answers: [
-      { text: "Sant", correct: true },
-      { text: "Falskt", correct: false },
+      { text: " Sant", correct: true },
+      { text: " Falskt", correct: false },
     ],
   },
   {
     type: "trueFalse",
     question: "Sverige är en delstat?",
     answers: [
-      { text: "Sant", correct: false },
-      { text: "Falskt", correct: true },
+      { text: " Sant", correct: false },
+      { text: " Falskt", correct: true },
     ],
   },
   {
     type: "multChoice",
     question: "Vilket djur har 4 ben?",
     answers: [
-      { text: "Apa", correct: false },
-      { text: "Ko", correct: true },
-      { text: "Fisk", correct: false },
-      { text: "Papegoja", correct: false },
+      { text: " Apa", correct: false },
+      { text: " Ko", correct: true },
+      { text: " Fisk", correct: false },
+      { text: " Papegoja", correct: false },
     ],
   },
   {
     type: "checkbox",
     question: "Vilka länder har en kust",
     answers: [
-      { text: "Uzbekistan", correct: false },
-      { text: "Mongolia", correct: false },
-      { text: "Pakistan", correct: true },
-      { text: "Turkmenistan", correct: true },
+      { text: " Uzbekistan", correct: false },
+      { text: " Mongolia", correct: false },
+      { text: " Pakistan", correct: true },
+      { text: " Turkmenistan", correct: true },
     ],
   },
   {
     type: "trueFalse",
     question: "Är det tre laxar i en lax ask?",
     answers: [
-      { text: "Sant", correct: true },
-      { text: "Falskt", correct: false },
+      { text: " Sant", correct: true },
+      { text: " Falskt", correct: false },
     ],
   },
   {
     type: "multChoice",
     question: "Vart i världen kan du hitta det lutande tornet i Pisa?",
     answers: [
-      { text: "Italien", correct: true },
-      { text: "Frankrike", correct: false },
-      { text: "Grekland", correct: false },
-      { text: "Spanien", correct: false },
+      { text: " Italien", correct: true },
+      { text: " Frankrike", correct: false },
+      { text: " Grekland", correct: false },
+      { text: " Spanien", correct: false },
     ],
   },
   {
     type: "trueFalse",
     question: "Kapitalism är destruktivt",
     answers: [
-      { text: "Sant", correct: true },
-      { text: "Falskt", correct: false },
+      { text: " Sant", correct: true },
+      { text: " Falskt", correct: false },
     ],
   },
   {
     type: "checkbox",
     question: "Vilka av dessa VST-plugins är ljudeffekter",
     answers: [
-      { text: "Echoboy", correct: true },
-      { text: "OTT", correct: true },
-      { text: "Tal-u-no-lx", correct: false },
-      { text: "Portal", correct: true },
+      { text: " Echoboy", correct: true },
+      { text: " OTT", correct: true },
+      { text: " Tal-u-no-lx", correct: false },
+      { text: " Portal", correct: true },
     ],
   },
   {
     type: "trueFalse",
     question: "3+4=6+1",
     answers: [
-      { text: "Sant", correct: true },
-      { text: "Falskt", correct: false },
+      { text: " Sant", correct: true },
+      { text: " Falskt", correct: false },
     ],
   },
   {
     type: "trueFalse",
     question: "Kan en groda svara på en fråga",
     answers: [
-      { text: "Sant", correct: false },
-      { text: "Falskt", correct: true },
+      { text: " Sant", correct: false },
+      { text: " Falskt", correct: true },
     ],
     // correctAnswerString: "Grodor kan inte prata så... nej.",
   },
@@ -130,15 +130,28 @@ nextBtn.addEventListener("click", () => {
 });
 
 let p = document.createElement("p");
-// let trueAnswers = [];
-// let falseAnswers = [];
+let userAnswers = [];
+
 function nextQuestion() {
+  let radioValue = document.querySelector("[name='answer']:checked").value;
+  let checkTheBoxes = document.querySelectorAll("input[type='checkbox']");
+  let checkboxValues = [];
+  const currentQuestion = questions[currentQuestionIndex];
+
+  checkTheBoxes.forEach((obj) => {
+    if (obj.checked) {
+      checkboxValues.push(obj.value);
+    }
+  });
   if (getPoint) {
     totalscore++;
-    // trueAnswers.push(questions[currentQuestionIndex]);
     getPoint = false;
   } else {
-    // falseAnswers.push(questions[currentQuestionIndex]);
+  }
+  if (currentQuestion.type === "checkbox") {
+    userAnswers.push(checkboxValues);
+  } else {
+    userAnswers.push(radioValue);
   }
   answerContainer.innerHTML = "";
   p.innerText = "";
@@ -148,20 +161,22 @@ function nextQuestion() {
     mainContainer.append(p);
     showQuestion(questions[currentQuestionIndex]);
   } else {
+    nextBtn.innerHTML = "Get result";
     getResult();
   }
-  // allAnswers.push(questions[currentQuestionIndex]);
+  console.log(userAnswers);
 }
-
 let getPoint = false;
 
 function showQuestion(question) {
   questionElement.innerText = question.question;
   span.innerHTML = "";
-  span.innerHTML = `<b><u>Question: ${currentQuestionIndex} / ${questions.length}</u></b> `;
+  span.innerHTML = `<b><u>Question: ${currentQuestionIndex + 1} / ${
+    questions.length
+  }</u></b> `;
 
   if (question.type === "multChoice" || question.type === "trueFalse") {
-    question.answers.forEach((answer, i) => {
+    question.answers.forEach((answer) => {
       const label = document.createElement("label");
       label.classList.add("answerRC-btn");
 
@@ -171,6 +186,11 @@ function showQuestion(question) {
       radio.classList.add("answerRC-btn");
       label.innerText = answer.text;
       label.appendChild(radio);
+      if (answer.correct === true) {
+        radio.value = answer.text;
+      } else {
+        radio.value = answer.text;
+      }
       radio.addEventListener("click", () => {
         if (answer.correct === true) {
           getPoint = true;
@@ -193,20 +213,25 @@ function showQuestion(question) {
         amountTrue++;
       }
     });
-    console.log(amountTrue);
+    // console.log(amountTrue);
 
-    question.answers.forEach((answer, i) => {
+    question.answers.forEach((answer) => {
       const label = document.createElement("label");
       label.classList.add("answerRC-btn");
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
       checkbox.name = "answer";
       checkbox.classList.add("answerRC-btn");
+      if (answer.correct === true) {
+        checkbox.value = answer.text;
+      } else {
+        checkbox.value = answer.text;
+      }
       label.innerText = answer.text;
       label.appendChild(checkbox);
       // console.log(checkbox.checked);
       checkbox.addEventListener("click", () => {
-        console.log("checkbox checked: " + checkbox.checked);
+        // console.log("checkbox checked: " + checkbox.checked);
         if (checkbox.checked && answer.correct === true) {
           trueChecked++;
         } else if (checkbox.checked === false && answer.correct === true) {
@@ -218,10 +243,8 @@ function showQuestion(question) {
         }
         if (trueChecked === amountTrue && falseChecked === 0) {
           getPoint = true;
-          console.log("nu är det true");
         } else {
           getPoint = false;
-          console.log("nu är det false");
         }
         if (trueChecked === 0 && falseChecked === 0) {
           hasClicked = false;
@@ -233,21 +256,53 @@ function showQuestion(question) {
     });
   }
 }
+// Test
 
+let myARray = [1, 2, 3, 4, 5];
+
+let anotherArray = ["a", "b", "c", "d"];
+
+myARray.forEach((number, i) => {
+  // console.log(number, anotherArray[i]);
+});
+
+// Test
 function getResult() {
   nextBtn.classList.add("hide");
   // listContainer.classList.remove("hide");
   questionContainer.classList.add("hide");
   const result = document.createElement("p");
 
-  // const goodList = document.createElement("ul");
-  // goodList.classList.add("good-list");
-  // goodList.forEach((obj) => {
-  //   list = document.createElement("li");
-  //   list.innerHTML = obj;
-  //   goodList.append(list);
-  // });
-  // listContainer.append(goodList);
+  listContainer.classList.remove("hide");
+  const answerDiv = document.createElement("div");
+  answerDiv.id = "ul-list";
+  questions.forEach((obj, i) => {
+    list = document.createElement("div");
+    listContainer.append(list);
+    let h3 = document.createElement("h3");
+    let p = document.createElement("p");
+    h3.innerHTML = `<b><u>Question</u></b>`;
+    h3.innerHTML += `<br><b>${obj.question}<b>`;
+    let userAns = userAnswers[i];
+    p.innerHTML = `Your answer: ${userAns}`;
+    list.append(h3);
+    // console.log(userAnswers[i]);
+    obj.answers.forEach((obj, i) => {
+      list2 = document.createElement("p");
+      list2.innerHTML += obj.text;
+      if (obj.correct === true) {
+        list2.style.color = "green";
+      } else if (obj.correct === false) {
+        list2.style.color = "red";
+      }
+      list.append(list2);
+    });
+    list.append(p);
+    // console.log(allAnswers[i]);
+
+    answerDiv.append(list);
+  });
+  listContainer.append(answerDiv);
 
   if (totalscore > maxQuest * 0.75) {
     result.innerHTML = "MVG";
