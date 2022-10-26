@@ -1,45 +1,3 @@
-.main-container {
-  text-align: center;
-  width: 300px;
-  border: 1px black;
-  border-style: solid;
-  padding: 15px;
-  margin: 20px;
-  background-color: orange;
-}
-.list-container {
-  text-align: center;
-  width: 300px;
-  border: 1px black;
-  border-style: solid;
-  padding: 15px;
-  margin: 20px;
-  background-color: orange;
-}
-.btn {
-  color: white;
-  background-color: rgba(128, 0, 0, 0.3);
-  padding: 3px;
-  margin: 2px;
-}
-.btn.dark-mode {
-  color: black;
-}
-.answer-btn {
-  border: 1.5px solid black;
-  background-color: rgba(128, 0, 0, 0.3);
-  margin: 10px;
-  padding: px;
-}
-.answer-btn:focus {
-  background: #e5e5e5;
-  -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
-  -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
-  box-shadow: inset 0px 0px 5px #c1c1c1;
-  outline: none;
-  color: white;
-  background-color: rgba(0, 17, 202, 0.594);
-}
 .hide {
   display: none;
 }
@@ -47,31 +5,60 @@
   background-color: white;
   color: black;
 }
+.main-container {
+  text-align: center;
+  width: 300px;
+  border: 1px black;
+  border-style: solid;
+  padding: 15px;
+  margin: 0 10%;
+  background-color: orange;
+}
+/* Ändrar färg på main och list containrarna när man klickar på
+   Darkmode knappen. */
+.dark-mode .main-container {
+  background: rgb(177, 115, 0);
+}
+.dark-mode .list-container {
+  background: rgb(177, 115, 0);
+}
+.list-container {
+  text-align: center;
+  width: 300px;
+  border: 1px black;
+  border-style: solid;
+  padding: 15px;
+  margin: 0 10%;
+  background-color: orange;
+}
+.btn {
+  color: white;
+  background-color: rgba(128, 0, 0, 0.3);
+  padding: 3px;
+  margin: 5px;
+  border-radius: 5px;
+}
+.btn.dark-mode {
+  color: black;
+}
 .answerRC-btn {
+  border-radius: 5px;
+  text-align: center;
+  min-width: 2px;
   border: 1.5px solid black;
   background-color: rgba(128, 0, 0, 0.3);
-  margin: 10px;
-  padding: 1px;
+  margin: 5px;
+  padding: 2px;
   cursor: pointer;
-}
-.answerRC-btn:focus {
-  color: white;
-  background-color: rgba(0, 17, 202, 0.594);
+  display: inline-block;
 }
 .dark-mode {
-  background-color: black;
-  color: white;
+  background-color: rgb(35, 35, 35);
+  color: rgb(227, 227, 227);
   border: 1px white;
 }
-/* Gör så här för allt som ska darkmode */
-/* .dark-mode .main-container {
-  background: yellow;
-} */
 #darkMode {
   position: relative;
   right: 125px;
   bottom: 13px;
-}
-#ul-list {
-  list-style: none;
 }

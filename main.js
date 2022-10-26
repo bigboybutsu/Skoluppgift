@@ -1,7 +1,7 @@
 const questions = [
   {
     type: "trueFalse",
-    question: "Är kungen en kung?",
+    question: "Kungen är en kung",
     answers: [
       { text: " Sant", correct: true },
       { text: " Falskt", correct: false },
@@ -9,7 +9,7 @@ const questions = [
   },
   {
     type: "trueFalse",
-    question: "Sverige är en delstat?",
+    question: "Sverige är en delstat",
     answers: [
       { text: " Sant", correct: false },
       { text: " Falskt", correct: true },
@@ -27,7 +27,7 @@ const questions = [
   },
   {
     type: "checkbox",
-    question: "Vilka länder har en kust",
+    question: "Vilka länder har en kust?",
     answers: [
       { text: " Uzbekistan", correct: false },
       { text: " Mongolia", correct: false },
@@ -37,7 +37,7 @@ const questions = [
   },
   {
     type: "trueFalse",
-    question: "Är det tre laxar i en lax ask?",
+    question: "Det är tre laxar i en lax ask",
     answers: [
       { text: " Sant", correct: true },
       { text: " Falskt", correct: false },
@@ -55,7 +55,7 @@ const questions = [
   },
   {
     type: "trueFalse",
-    question: "Kapitalism är destruktivt",
+    question: "I mars är det 31 dagar",
     answers: [
       { text: " Sant", correct: true },
       { text: " Falskt", correct: false },
@@ -63,7 +63,7 @@ const questions = [
   },
   {
     type: "checkbox",
-    question: "Vilka av dessa VST-plugins är ljudeffekter",
+    question: "Vilka av dessa VST-plugins är ljudeffekter?",
     answers: [
       { text: " Echoboy", correct: true },
       { text: " OTT", correct: true },
@@ -81,7 +81,7 @@ const questions = [
   },
   {
     type: "trueFalse",
-    question: "Kan en groda svara på en fråga",
+    question: "Grodor kan prata",
     answers: [
       { text: " Sant", correct: false },
       { text: " Falskt", correct: true },
@@ -90,6 +90,7 @@ const questions = [
   },
 ];
 
+// Deklarerar alla const som kommer användas
 const questionElement = document.querySelector("#question");
 const questionContainer = document.querySelector("#question-container");
 const answerContainer = document.querySelector("#answers-container");
@@ -101,22 +102,23 @@ const darkModeBtn = document.querySelector("#darkMode");
 const controls = document.querySelector(".controls");
 const listContainer = document.querySelector(".list-container");
 const span = document.createElement("span");
+const p = document.createElement("p");
 questionContainer.prepend(span);
 
+// Räknaren för att se vilken fråga man ska generara
 let currentQuestionIndex;
-let totalscore = 0;
-let maxQuest = questions.length;
-
+// Startar quizet genom att generera fram frågor från showQuestion()
 startBtn.addEventListener("click", () => {
   currentQuestionIndex = 0;
   showQuestion(questions[currentQuestionIndex]);
   startBtn.classList.add("hide");
-  // darkModeBtn.classList.add("hide");
   nextBtn.classList.remove("hide");
 });
 
 let hasClicked = false;
-let hasClickedFalse = document.createElement("div");
+let hasClickedFalse = document.createElement("p");
+// Genererar nästa fråga
+// och kollar om man har klickat i ett alternativ
 nextBtn.addEventListener("click", () => {
   if (hasClicked) {
     hasClickedFalse.innerText = "";
@@ -125,61 +127,28 @@ nextBtn.addEventListener("click", () => {
   } else {
     hasClickedFalse.innerText = "Please select an option!";
     controls.append(hasClickedFalse);
-    alert("Please select an option");
   }
 });
 
-let p = document.createElement("p");
-let userAnswers = [];
-
-function nextQuestion() {
-  let radioValue = document.querySelector("[name='answer']:checked").value;
-  let checkTheBoxes = document.querySelectorAll("input[type='checkbox']");
-  let checkboxValues = [];
-  const currentQuestion = questions[currentQuestionIndex];
-
-  checkTheBoxes.forEach((obj) => {
-    if (obj.checked) {
-      checkboxValues.push(obj.value);
-    }
-  });
-  if (getPoint) {
-    totalscore++;
-    getPoint = false;
-  } else {
-  }
-  if (currentQuestion.type === "checkbox") {
-    userAnswers.push(checkboxValues);
-  } else {
-    userAnswers.push(radioValue);
-  }
-  answerContainer.innerHTML = "";
-  p.innerText = "";
-  currentQuestionIndex++;
-  if (currentQuestionIndex < questions.length) {
-    p.innerHTML = `${totalscore} / ${questions.length}`;
-    mainContainer.append(p);
-    showQuestion(questions[currentQuestionIndex]);
-  } else {
-    nextBtn.innerHTML = "Get result";
-    getResult();
-  }
-  console.log(userAnswers);
-}
 let getPoint = false;
-
+/** Generarar alla individuella frågor varje gång man klickar
+ *  på nextBtn. 
+ *  (ShowQuestion() körs genom nextQuestion() om det
+ *  finns frågor kvar i frågor arrayen.)
+ *  Här ser den skillnaden på de olika types som finns i
+ *  arrayen och generarar ut två slags knappar beroende på om
+ *  det är en checkbox eller radio fråga.*/
 function showQuestion(question) {
   questionElement.innerText = question.question;
   span.innerHTML = "";
   span.innerHTML = `<b><u>Question: ${currentQuestionIndex + 1} / ${
     questions.length
   }</u></b> `;
-
+  // Radio-button knapparna
   if (question.type === "multChoice" || question.type === "trueFalse") {
     question.answers.forEach((answer) => {
       const label = document.createElement("label");
       label.classList.add("answerRC-btn");
-
       const radio = document.createElement("input");
       radio.type = "radio";
       radio.name = "answer";
@@ -191,6 +160,10 @@ function showQuestion(question) {
       } else {
         radio.value = answer.text;
       }
+      /** Tar information om man har klickat på rätt eller fel knapp.
+       *  Sedan så ändrar den beroende på svar två olika boolean
+       *  variablar till true/false.
+       */
       radio.addEventListener("click", () => {
         if (answer.correct === true) {
           getPoint = true;
@@ -204,7 +177,9 @@ function showQuestion(question) {
       });
       answerContainer.append(label);
     });
+    // Checkbox-knapparna
   } else if (question.type === "checkbox") {
+    // Kollar hur många rätta svar det finns på frågan.
     let amountTrue = 0;
     let trueChecked = 0;
     let falseChecked = 0;
@@ -213,7 +188,6 @@ function showQuestion(question) {
         amountTrue++;
       }
     });
-    // console.log(amountTrue);
 
     question.answers.forEach((answer) => {
       const label = document.createElement("label");
@@ -229,9 +203,12 @@ function showQuestion(question) {
       }
       label.innerText = answer.text;
       label.appendChild(checkbox);
-      // console.log(checkbox.checked);
+      /** I och med att alla svar "rättas" i samma funktion som skapar dem.
+       *  Så måste man använda en rad if statements användas.
+       *  Dem kollar vilken knapp man har klickat på och
+       *  lägger till "1" till antingen de rätta eller fel svars variablarna.
+       */
       checkbox.addEventListener("click", () => {
-        // console.log("checkbox checked: " + checkbox.checked);
         if (checkbox.checked && answer.correct === true) {
           trueChecked++;
         } else if (checkbox.checked === false && answer.correct === true) {
@@ -256,26 +233,63 @@ function showQuestion(question) {
     });
   }
 }
-// Test
 
-let myARray = [1, 2, 3, 4, 5];
+let userAnswers = [];
+let totalscore = 0;
+/** Genererar nästa fråga samt sparar användarens svar
+ *   Sedan kollar ett if statement om quizet är klart
+ *   och antingen startar getResult() eller kör showQuestion()
+ *   som i sin tur kör nextQuestion() igen.
+ */
+function nextQuestion() {
+  let radioValue = document.querySelector("[name='answer']:checked").value;
+  let checkTheBoxes = document.querySelectorAll("input[type='checkbox']");
+  let checkboxValues = [];
+  const currentQuestion = questions[currentQuestionIndex];
 
-let anotherArray = ["a", "b", "c", "d"];
+  checkTheBoxes.forEach((obj) => {
+    if (obj.checked) {
+      checkboxValues.push(obj.value);
+    }
+  });
 
-myARray.forEach((number, i) => {
-  // console.log(number, anotherArray[i]);
-});
+  if (getPoint) {
+    totalscore++;
+    getPoint = false;
+  } else {
+  }
 
-// Test
+  if (currentQuestion.type === "checkbox") {
+    userAnswers.push(checkboxValues);
+  } else {
+    userAnswers.push(radioValue);
+  }
+
+  answerContainer.innerHTML = "";
+  currentQuestionIndex++;
+
+  if (currentQuestionIndex < questions.length) {
+    showQuestion(questions[currentQuestionIndex]);
+  } else {
+    nextBtn.innerHTML = "Get result";
+    getResult();
+  }
+}
+
+let maxQuest = questions.length;
+/** Visar en ny container som innehållar alla frågor och
+ *  visar information från userAnswer arrayen.
+ */
 function getResult() {
+  // Gömmer/skapar de element som används i endast denna funktion.
   nextBtn.classList.add("hide");
-  // listContainer.classList.remove("hide");
   questionContainer.classList.add("hide");
   const result = document.createElement("p");
-
   listContainer.classList.remove("hide");
   const answerDiv = document.createElement("div");
-  answerDiv.id = "ul-list";
+  answerDiv.id = "answer-list";
+
+  //Går igenom alla frågor och skapar text och struktur för dem.
   questions.forEach((obj, i) => {
     list = document.createElement("div");
     listContainer.append(list);
@@ -284,9 +298,10 @@ function getResult() {
     h3.innerHTML = `<b><u>Question</u></b>`;
     h3.innerHTML += `<br><b>${obj.question}<b>`;
     let userAns = userAnswers[i];
-    p.innerHTML = `Your answer: ${userAns}`;
+    p.innerHTML = `Your answer: <u>${userAns}</u>`;
     list.append(h3);
-    // console.log(userAnswers[i]);
+
+    // Ger färg till rätta och fel svar.
     obj.answers.forEach((obj, i) => {
       list2 = document.createElement("p");
       list2.innerHTML += obj.text;
@@ -298,12 +313,11 @@ function getResult() {
       list.append(list2);
     });
     list.append(p);
-    // console.log(allAnswers[i]);
-
     answerDiv.append(list);
   });
   listContainer.append(answerDiv);
 
+  // Ger färg till en text baserat på hur många rätt man fått.
   if (totalscore > maxQuest * 0.75) {
     result.innerHTML = "MVG";
     result.style.color = "green";
@@ -315,9 +329,11 @@ function getResult() {
     result.style.color = "red";
   }
   p.innerHTML = `${totalscore} / ${questions.length}`;
+  mainContainer.append(p);
   mainContainer.append(result);
 }
 
+// Skapar en darkmode knapp som togglar två html klasser.
 darkModeBtn.addEventListener("click", () => {
   let element = document.body;
   mainContainer.style.backgroundcolor = "black";
